@@ -5,9 +5,8 @@ const router = express.Router();
 const conexion = require("../database/conexion");
 
 const autenticacion = require("../middlewares/autenticacion");
-const autorizacion = require("../middlewares/autorizacion");
 
-router.get("/", async (req, res) => {
+router.get("/", autenticacion, async (req, res) => {
   try {
     const resultado = await conexion.query(`
             SELECT *
@@ -24,7 +23,7 @@ router.get("/", async (req, res) => {
 });
 
 
-router.get("/:id", async (req, res) => {
+router.get("/:id", autenticacion, async (req, res) => {
   try {
     const { id } = req.params;
 
@@ -51,7 +50,7 @@ router.get("/:id", async (req, res) => {
   }
 });
 
-router.post("/", autenticacion, autorizacion("Admin"), async (req, res) => {
+router.post("/", autenticacion, async (req, res) => {
   try {
     const { nombre, descripcion, precio, stock, imagen } = req.body;
 
@@ -83,7 +82,7 @@ router.post("/", autenticacion, autorizacion("Admin"), async (req, res) => {
 });
 
 
-router.put("/:id", autenticacion, autorizacion("Admin"), async (req, res) => {
+router.put("/:id", autenticacion, async (req, res) => {
   try {
     const { id } = req.params;
 
@@ -118,7 +117,7 @@ router.put("/:id", autenticacion, autorizacion("Admin"), async (req, res) => {
   }
 });
 
-router.delete("/:id", autenticacion, autorizacion("Admin"), async (req, res) => {
+router.delete("/:id", autenticacion, async (req, res) => {
     try {
       const { id } = req.params;
 
